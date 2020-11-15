@@ -8,6 +8,7 @@ gem 'faker'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 gem 'rubocop', require: false
 gem 'rubocop-rails', require: false
+gem 'rack-cors'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
