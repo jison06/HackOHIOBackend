@@ -4,7 +4,7 @@ module Api
       attr_reader :user_deck
 
       def index
-        @decks = UserDeck.joins(:user_sets).where(user_sets: { completed_at: nil }).uniq
+        @saved_sets = UserSet.all_saved_for(params[:user_id])
       end
 
       def create
@@ -14,19 +14,26 @@ module Api
       end
 
       def show
-        @deck = UserDeck.find_by!(id: params[:id])
-        @user_deck = UserCard.find_by!(user_set_id: UserSet.is_active(@deck.id).first.id)
+        @saved_sets = UserSet.all_saved_for(params[:user_id])
+        @difficulty = UserSet.all_saved_for(params[:user_id]).first.user_cards.max_by {  |user_card| user_card.card.category_id  }.card.category_id
+        render :saved_sets
       end
 
       def save_deck
         deck = UserDeck.find_by!(id: params[:user_deck_id])
-        Api::V1::DeckCreator.new(user, deck, current_set: UserSet.is_active(deck.id).first).save_and_complete
+        Api::V1::DeckCreator.new(user, deck, current_set: UserSet.is_active(deck.id).first, name: params[:name]).save_and_complete
         render 'api/v1/shared/base_success'
       end
 
       def complete_deck
         deck = UserDeck.find_by!(id: params[:user_deck_id])
         Api::V1::DeckCreator.new(user, deck, current_set: UserSet.is_active(deck.id).first).complete
+        render 'api/v1/shared/base_success'
+      end
+
+      def start
+        deck = UserDeck.find_by!(id: params[:user_deck_id])
+        Api::V1::DeckCreator.new(user, deck, current_set: UserSet.saved_set_for(deck.id).first, name: deck.name).save_and_complete
         render 'api/v1/shared/base_success'
       end
 

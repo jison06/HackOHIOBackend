@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_11_14_065308) do
   create_table "profiles", force: :cascade do |t|
     t.bigint "user_id"
     t.text "bio"
-    t.integer "score", default: 0, null: false
+    t.integer "score", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2020_11_14_065308) do
     t.bigint "user_deck_id"
     t.datetime "completed_at"
     t.boolean "is_active", default: true, null: false
+    t.boolean "is_saved", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_deck_id"], name: "index_user_sets_on_user_deck_id"

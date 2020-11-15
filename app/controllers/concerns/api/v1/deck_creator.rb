@@ -2,7 +2,7 @@ module Api
   module V1
     class DeckCreator
       attr_accessor :user_deck
-      attr_reader :user, :difficulty, :cards, :current_set
+      attr_reader :user, :difficulty, :cards, :current_set, :name
 
       def initialize(user, user_deck, **options)
         @user = user
@@ -22,7 +22,8 @@ module Api
       end
 
       def save_and_complete
-        set = UserSet.create(user_deck_id: user_deck.id)
+        user_deck.update(name: name)
+        set = UserSet.create(user_deck_id: user_deck.id, is_active: false, is_saved: true)
         current_set.user_cards.each do |user_card|
           UserCard.create(user_set_id: set.id, card_id: user_card.card_id)
         end

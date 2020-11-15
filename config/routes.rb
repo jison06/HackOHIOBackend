@@ -6,6 +6,7 @@ Rails.application.routes.draw do
         resources :user_decks do
           post '/save_deck', to: 'user_decks#save_deck'
           patch '/complete_deck', to: 'user_decks#complete_deck'
+          post '/start', to: 'user_decks#start'
         end
         resources :profiles
       end

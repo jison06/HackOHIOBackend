@@ -4,6 +4,7 @@ class CreateUserSets < ActiveRecord::Migration[6.0]
       t.references :user_deck, foreign_key: true
       t.timestamp :completed_at
       t.boolean :is_active, null: false, default: true
+      t.boolean :is_saved, null: false, default: false
 
       t.timestamps
     end
