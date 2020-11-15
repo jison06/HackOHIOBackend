@@ -21,17 +21,18 @@ module Api
         end
       end
 
-      def save
+      def save_and_complete
         set = UserSet.create(user_deck_id: user_deck.id)
         current_set.user_cards.each do |user_card|
           UserCard.create(user_set_id: set.id, card_id: user_card.card_id)
         end
+        complete
       end
 
       def complete
         return if current_set.completed_at
 
-        current_set.update!(completed_at: Time.now)
+        current_set.update!(completed_at: Time.now, is_active: false)
         user_score = user.score
         current_set.user_cards.each do |user_card|
           card = Card.find_by!(id: user_card.id)

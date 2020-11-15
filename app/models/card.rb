@@ -1,5 +1,5 @@
 class Card < ApplicationRecord
-  has_many :categories
+  belongs_to :category
   has_many :user_cards
 
   scope :get_easy_cards, lambda{

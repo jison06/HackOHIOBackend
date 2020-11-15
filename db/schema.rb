@@ -41,7 +41,6 @@ ActiveRecord::Schema.define(version: 2020_11_14_065308) do
   end
 
   create_table "user_cards", force: :cascade do |t|
-    t.integer "weight", default: 0, null: false
     t.bigint "user_set_id"
     t.bigint "card_id"
     t.datetime "completed_at"
@@ -63,6 +62,7 @@ ActiveRecord::Schema.define(version: 2020_11_14_065308) do
   create_table "user_sets", force: :cascade do |t|
     t.bigint "user_deck_id"
     t.datetime "completed_at"
+    t.boolean "is_active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_deck_id"], name: "index_user_sets_on_user_deck_id"

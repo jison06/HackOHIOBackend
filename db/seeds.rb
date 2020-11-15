@@ -11,11 +11,11 @@
 end
 
 { easy: 10, medium: 20, hard: 30 }.each do |difficulty, score|
-  Category.create(difficulty: difficulty, score: score) 
+  Category.create(difficulty: difficulty, score: score)
 end
 
-difficulty = Category.all.map(&:id)
+difficulties = Category.all.map(&:id)
 
-30.times do
-  Card.create(category_id: difficulty.sample, workout: Faker::Games::Pokemon.name, description: Faker::Games::Pokemon.move)
+60.times do
+  Card.create(category_id: difficulties.sample, workout: Faker::Games::Pokemon.name, description: Faker::Games::Pokemon.move)
 end
