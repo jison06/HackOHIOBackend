@@ -10,34 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_14_065539) do
+ActiveRecord::Schema.define(version: 2020_11_14_065308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
-    t.bigint "deck_id"
     t.string "workout"
     t.string "description"
-    t.integer "weight", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["deck_id"], name: "index_cards_on_deck_id"
-  end
-
-  create_table "categories", force: :cascade do |t|
-    t.bigint "user_deck_id"
-    t.string "type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_deck_id"], name: "index_categories_on_user_deck_id"
-  end
-
-  create_table "decks", force: :cascade do |t|
     t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_decks_on_category_id"
+    t.index ["category_id"], name: "index_cards_on_category_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.integer "score", default: 0, null: false
+    t.string "difficulty"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -51,15 +42,18 @@ ActiveRecord::Schema.define(version: 2020_11_14_065539) do
 
   create_table "user_cards", force: :cascade do |t|
     t.integer "weight", default: 0, null: false
-    t.bigint "user_deck_id"
+    t.bigint "user_set_id"
+    t.bigint "card_id"
     t.datetime "completed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_deck_id"], name: "index_user_cards_on_user_deck_id"
+    t.index ["card_id"], name: "index_user_cards_on_card_id"
+    t.index ["user_set_id"], name: "index_user_cards_on_user_set_id"
   end
 
   create_table "user_decks", force: :cascade do |t|
     t.string "name"
+    t.string "difficulty"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -67,11 +61,11 @@ ActiveRecord::Schema.define(version: 2020_11_14_065539) do
   end
 
   create_table "user_sets", force: :cascade do |t|
-    t.bigint "user_card_id"
+    t.bigint "user_deck_id"
     t.datetime "completed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_card_id"], name: "index_user_sets_on_user_card_id"
+    t.index ["user_deck_id"], name: "index_user_sets_on_user_deck_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -85,11 +79,10 @@ ActiveRecord::Schema.define(version: 2020_11_14_065539) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "cards", "decks"
-  add_foreign_key "categories", "user_decks"
-  add_foreign_key "decks", "categories"
+  add_foreign_key "cards", "categories"
   add_foreign_key "profiles", "users"
-  add_foreign_key "user_cards", "user_decks"
+  add_foreign_key "user_cards", "cards"
+  add_foreign_key "user_cards", "user_sets"
   add_foreign_key "user_decks", "users"
-  add_foreign_key "user_sets", "user_cards"
+  add_foreign_key "user_sets", "user_decks"
 end

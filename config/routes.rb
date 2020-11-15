@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users do
+        resources :user_decks do
+          post '/save_deck/:set_id', to: 'user_decks#save_deck'
+          patch '/complete_deck/:set_id', to: 'user_decks#complete_deck'
+        end
         resources :profiles
       end
     end

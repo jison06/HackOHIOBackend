@@ -3,5 +3,6 @@ class UserDeck < ApplicationRecord
   has_many :user_cards, through: :user_sets
   has_many :user_sets
 
-  validates :name, length: { maximum: 50 }, presence: true
+  validates :name, length: { maximum: 50 }, presence: true, uniqueness: true
+  validates :difficulty, presence: true
 end
