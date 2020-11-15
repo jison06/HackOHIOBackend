@@ -24,5 +24,9 @@ json.data do
     json.user_deck_id set.user_deck_id
     json.deck_name set.user_deck.name
     json.difficulty difficulty(set.user_cards.max_by { |user_card| user_card.card.category_id }.card.category.id)
+    json.cards set.user_cards do |user_card|
+      json.workout user_card.card.workout
+      json.duration user_card.card.description
+    end
   end
 end

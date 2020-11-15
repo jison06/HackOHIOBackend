@@ -26,6 +26,11 @@ module Api
         render :show
       end
 
+      def login
+        @user = User.find_by!(username: params[:username])
+        render :show
+      end
+
       private
 
       def user_params
